@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Casal & Companhia</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    color: white;
+    background:
+        radial-gradient(circle at 20% 20%, #6c2a91, transparent 30%),
+        radial-gradient(circle at 80% 20%, #a52365, transparent 30%),
+        #130b24;
+}
+
+.container {
+    width: 92%;
+    max-width: 900px;
+    margin: auto;
+    padding: 25px 0;
+}
+
+.logo {
+    text-align: center;
+    font-size: 38px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.logo span {
+    color: #ff4f9a;
+}
+
+.card {
+    background: rgba(35, 24, 62, 0.95);
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 25px;
+    padding: 30px;
+    box-shadow: 0 20px 50px rgba(0,0,0,.4);
+}
+
+.screen {
+    display: none;
+}
+
+.screen.active {
+    display: block;
+}
+
+.hero {
+    text-align: center;
+}
+
+.emoji {
+    font-size: 65px;
+}
+
+h1 {
+    font-size: 55px;
+    margin: 10px 0;
+}
+
+h2 {
+    font-size: 30px;
+}
+
+p {
+    color: #d4cbe2;
+    line-height: 1.6;
+}
+
+button {
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.btn {
+    padding: 15px 25px;
+    border-radius: 14px;
+    color: white;
+    background: linear-gradient(135deg,#ff4f9a,#7657ff);
+    margin: 5px;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+.secondary {
+    background: rgba(255,255,255,.1);
+}
+
+.actions {
+    text-align: center;
+    margin-top: 25px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+    gap: 15px;
+}
+
+.option {
+    padding: 20px;
+    background: rgba(255,255,255,.07);
+    border: 2px solid transparent;
+    border-radius: 16px;
+    cursor: pointer;
+}
+
+.option.selected {
+    border-color: #ff4f9a;
+    background: rgba(255,79,154,.15);
+}
+
+.option strong {
+    display: block;
+    font-size: 19px;
+    margin-bottom: 7px;
+}
+
+.option small {
+    color: #c8bddc;
+}
+
+.field {
+    margin: 18px 0;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.2);
+    background: #10091d;
+    color: white;
+}
+
+.player {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.question-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.timer {
+    color: #ffd166;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.progress {
+    height: 8px;
+    background: rgba(255,255,255,.1);
+    border-radius: 20px;
+    margin: 20px 0;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg,#ff4f9a,#7657ff);
+}
+
+.question {
+    font-size: 28px;
+    font-weight: bold;
+    margin: 30px 0;
+}
+
+.answers {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.answer {
+    padding: 20px;
+    text-align: left;
+    color: white;
+    background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 15px;
+}
+
+.answer:hover {
+    background: rgba(255,255,255,.15);
+}
+
+.correct {
+    background: rgba(40,209,124,.25) !important;
+    border-color: #28d17c !important;
+}
+
+.wrong {
+    background: rgba(255,93,108,.25) !important;
+    border-color: #ff5d6c !important;
+}
+
+.feedback {
+    text-align: center;
+    min-height: 30px;
+    margin: 20px 0;
+    font-weight: bold;
+}
+
+.hidden {
+    display: none;
+}
+
+.winner {
+    text-align: center;
+    font-size: 45px;
+    color: #ffd166;
+    font-weight: bold;
+}
+
+.ranking div {
+    display: flex;
+    justify-content: space-between;
+    background: rgba(255,255,255,.07);
+    padding: 15px;
+    margin: 8px 0;
+    border-radius: 12px;
+}
+
+@media(max-width:600px) {
+
+    h1 {
+        font-size: 40px;
+    }
+
+    .answers {
+        grid-template-columns: 1fr;
+    }
+
+    .card {
+        padding: 20px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="logo">
+    Casal <span>&</span> Companhia
+</div>
+
+<!-- TELA INICIAL -->
+<section id="home" class="screen active">
+
+<div class="card hero">
+
+<div class="emoji">😂🧠🎉</div>
+
+<h1>Casal & Companhia</h1>
+
+<p>
+O quiz mais zoeiro para casais, amigos e família!
+</p>
+
+<p>
+Teste seus conhecimentos, responda rápido e tente chegar ao topo do ranking.
+</p>
+
+<div class="actions">
+
+<button class="btn" onclick="mostrarConfiguracao()">
+🚀 COMEÇAR
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- CONFIGURAÇÃO -->
+
+<section id="config" class="screen">
+
+<div class="card">
+
+<h2>🎮 Preparando a diversão</h2>
+
+<p>Configure sua partida.</p>
+
+<div class="field">
+
+<label>Modo de jogo</label>
+
+<div class="grid">
+
+<div id="modoLocal"
+class="option selected"
+onclick="selecionarModo('local')">
+
+<strong>📱 Modo Local</strong>
+
+<small>
+Todos jogam no mesmo aparelho.
+</small>
+
+</div>
+
+<div id="modoOnline"
+class="option"
+onclick="selecionarModo('online')">
+
+<strong>🌐 Modo Online</strong>
+
+<small>
+Cada jogador poderá usar seu próprio aparelho.
+</small>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="field">
+
+<label>Categoria</label>
+
+<select id="categoria">
+
+<option value="geral">
+🧠 Conhecimentos Gerais
+</option>
+
+<option value="ciencia">
+🔬 Ciência
+</option>
+
+<option value="historia">
+📚 História
+</option>
+
+<option value="tecnologia">
+💻 Tecnologia
+</option>
+
+<option value="geografia">
+🌎 Geografia
+</option>
+
+<option value="esportes">
+⚽ Esportes
+</option>
+
+</select>
+
+</div>
+
+
+<div class="field">
+
+<label>Número de perguntas</label>
+
+<select id="quantidade">
+
+<option value="5">5 perguntas</option>
+
+<option value="10" selected>
+10 perguntas
+</option>
+
+</select>
+
+</div>
+
+
+<div class="field">
+
+<label>Jogadores</label>
+
+<div id="jogadores"></div>
+
+<button class="btn secondary"
+onclick="adicionarJogador()">
+
+➕ Adicionar jogador
+
+</button>
+
+</div>
+
+
+<div class="actions">
+
+<button class="btn secondary"
+onclick="voltarInicio()">
+
+⬅ Voltar
+
+</button>
+
+<button class="btn"
+onclick="iniciarJogo()">
+
+🎲 COMEÇAR QUIZ
+
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- QUIZ -->
+
+<section id="quiz" class="screen">
+
+<div class="card">
+
+<div class="question-top">
+
+<div>
+
+<strong id="vezDe"></strong>
+
+<p id="contador"></p>
+
+</div>
+
+<div class="timer" id="timer">
+15
+</div>
+
+</div>
+
+
+<div class="progress">
+
+<div class="progress-bar"
+id="barra">
+</div>
+
+</div>
+
+
+<div class="question"
+id="pergunta">
+</div>
+
+
+<div class="answers"
+id="respostas">
+</div>
+
+
+<div class="feedback"
+id="feedback">
+</div>
+
+
+<div class="actions">
+
+<button id="proxima"
+class="btn hidden"
+onclick="proximaPergunta()">
+
+Próxima ➜
+
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- RESULTADO -->
+
+<section id="resultado" class="screen">
+
+<div class="card">
+
+<h2 style="text-align:center">
+🏆 FIM DE JOGO!
+</h2>
+
+<p style="text-align:center">
+O grande campeão da rodada foi...
+</p>
+
+<div class="winner" id="vencedor"></div>
+
+<div class="ranking" id="ranking"></div>
+
+<div class="actions">
+
+<button class="btn"
+onclick="novoJogo()">
+
+🔄 Jogar novamente
+
+</button>
+
+<button class="btn secondary"
+onclick="voltarInicio()">
+
+🏠 Início
+
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+</div>
+
+
+<script>
+
+const perguntas = {
+
+geral: [
+
+{
+q:"Qual é o maior planeta do Sistema Solar?",
+a:["Terra","Júpiter","Marte","Vênus"],
+c:1
+},
+
+{
+q:"Quantos lados possui um hexágono?",
+a:["5","6","7","8"],
+c:1
+},
+
+{
+q:"Qual é a capital do Brasil?",
+a:["São Paulo","Rio de Janeiro","Brasília","Salvador"],
+c:2
+},
+
+{
+q:"Quanto é 9 × 8?",
+a:["64","72","81","70"],
+c:1
+},
+
+{
+q:"Quantos minutos existem em uma hora?",
+a:["30","45","60","90"],
+c:2
+},
+
+{
+q:"Qual é a moeda oficial do Brasil?",
+a:["Dólar","Peso","Real","Euro"],
+c:2
+},
+
+{
+q:"Qual animal é conhecido como rei da selva?",
+a:["Tigre","Leão","Lobo","Urso"],
+c:1
+},
+
+{
+q:"Qual gás é essencial para a respiração humana?",
+a:["Oxigênio","Hélio","Hidrogênio","Neônio"],
+c:0
+},
+
+{
+q:"Qual instrumento possui teclas, cordas e martelos?",
+a:["Violão","Piano","Flauta","Tambor"],
+c:1
+},
+
+{
+q:"Qual continente abriga o Egito?",
+a:["Europa","Ásia","África","Oceania"],
+c:2
+}
+
+],
+
+
+ciencia: [
+
+{
+q:"Qual é a unidade básica da vida?",
+a:["Átomo","Célula","Tecido","Órgão"],
+c:1
+},
+
+{
+q:"Qual planeta é conhecido como Planeta Vermelho?",
+a:["Marte","Vênus","Mercúrio","Netuno"],
+c:0
+},
+
+{
+q:"A água ferve, ao nível do mar, aproximadamente a quantos °C?",
+a:["50 °C","75 °C","100 °C","150 °C"],
+c:2
+},
+
+{
+q:"Qual órgão bombeia o sangue pelo corpo?",
+a:["Pulmão","Cérebro","Coração","Fígado"],
+c:2
+},
+
+{
+q:"Qual força nos mantém atraídos à superfície da Terra?",
+a:["Magnetismo","Gravidade","Atrito","Pressão"],
+c:1
+}
+
+],
+
+
+historia: [
+
+{
+q:"Em qual país estão as pirâmides de Gizé?",
+a:["México","Egito","Grécia","Índia"],
+c:1
+},
+
+{
+q:"Quem proclamou a Independência do Brasil em 1822?",
+a:["Dom Pedro I","Tiradentes","Getúlio Vargas","Marechal Deodoro"],
+c:0
+},
+
+{
+q:"A escrita cuneiforme é associada à antiga...",
+a:["Mesopotâmia","Escandinávia","Austrália","América"],
+c:0
+},
+
+{
+q:"Qual cidade foi soterrada pela erupção do Vesúvio em 79 d.C.?",
+a:["Pompeia","Atenas","Roma","Alexandria"],
+c:0
+},
+
+{
+q:"Quem foi o primeiro presidente do Brasil?",
+a:["Getúlio Vargas","Deodoro da Fonseca","Floriano Peixoto","Juscelino Kubitschek"],
+c:1
+}
+
+],
+
+
+tecnologia: [
+
+{
+q:"O que significa HTML?",
+a:[
+"HyperText Markup Language",
+"High Technology Machine Language",
+"Home Tool Markup Link",
+"Hyper Transfer Main Language"
+],
+c:0
+},
+
+{
+q:"Qual linguagem é usada para criar interatividade em páginas web?",
+a:["JavaScript","SQL","C","Assembly"],
+c:0
+},
+
+{
+q:"Qual destes é um sistema operacional?",
+a:["Chrome","Windows","Google","HTML"],
+c:1
+},
+
+{
+q:"Qual componente é usado para armazenar dados permanentemente?",
+a:["SSD","CPU","Cooler","Mouse"],
+c:0
+},
+
+{
+q:"Qual destes é um navegador?",
+a:["Chrome","Windows","Linux","Android"],
+c:0
+}
+
+],
+
+
+geografia: [
+
+{
+q:"Qual é o maior país da América do Sul em território?",
+a:["Argentina","Brasil","Peru","Colômbia"],
+c:1
+},
+
+{
+q:"Qual é o maior oceano da Terra?",
+a:["Atlântico","Índico","Pacífico","Ártico"],
+c:2
+},
+
+{
+q:"Em qual continente fica o Japão?",
+a:["Europa","Ásia","África","América"],
+c:1
+},
+
+{
+q:"Qual linha divide a Terra nos hemisférios Norte e Sul?",
+a:[
+"Trópico de Câncer",
+"Meridiano de Greenwich",
+"Linha do Equador",
+"Trópico de Capricórnio"
+],
+c:2
+},
+
+{
+q:"Qual é a capital da Argentina?",
+a:["Santiago","Buenos Aires","Montevidéu","Lima"],
+c:1
+}
+
+],
+
+
+esportes: [
+
+{
+q:"Quantos jogadores de cada equipe começam uma partida de futebol em campo?",
+a:["9","10","11","12"],
+c:2
+},
+
+{
+q:"Em qual esporte é utilizada uma cesta?",
+a:["Tênis","Basquete","Natação","Vôlei"],
+c:1
+},
+
+{
+q:"Quantos anéis formam o símbolo olímpico?",
+a:["4","5","6","7"],
+c:1
+},
+
+{
+q:"No tênis, como se chama a pontuação zero?",
+a:["Love","Zero","Nulo","Start"],
+c:0
+},
+
+{
+q:"Qual esporte é disputado em uma piscina?",
+a:["Natação","Judô","Esgrima","Ciclismo"],
+c:0
+}
+
+]
+
+};
+
+
+let jogadores = [];
+
+let modo = "local";
+
+let listaPerguntas = [];
+
+let perguntaAtual = 0;
+
+let jogadorAtual = 0;
+
+let tempo = 15;
+
+let intervalo;
+
+let respondeu = false;
+
+
+function mostrarTela(id){
+
+document.querySelectorAll(".screen")
+.forEach(tela=>{
+tela.classList.remove("active");
+});
+
+document.getElementById(id)
+.classList.add("active");
+
+}
+
+
+function mostrarConfiguracao(){
+
+mostrarTela("config");
+
+if(jogadores.length === 0){
+
+adicionarJogador();
+adicionarJogador();
+
+}
+
+}
+
+
+function voltarInicio(){
+
+clearInterval(intervalo);
+
+mostrarTela("home");
+
+}
+
+
+function selecionarModo(novoModo){
+
+modo = novoModo;
+
+document.getElementById("modoLocal")
+.classList.toggle("selected",novoModo==="local");
+
+document.getElementById("modoOnline")
+.classList.toggle("selected",novoModo==="online");
+
+if(novoModo==="online"){
+
+alert(
+"🌐 O modo online será ativado na próxima etapa do projeto!"
+);
+
+}
+
+}
+
+
+function adicionarJogador(){
+
+if(document.querySelectorAll("#jogadores input").length >= 8){
+
+alert("Máximo de 8 jogadores.");
+
+return;
+
+}
+
+const numero =
+document.querySelectorAll("#jogadores input").length + 1;
+
+const div =
+document.createElement("div");
+
+div.className="player";
+
+div.innerHTML=`
+
+<input
+type="text"
+maxlength="18"
+placeholder="Nome do jogador ${numero}"
+value="Jogador ${numero}"
+>
+
+`;
+
+document.getElementById("jogadores")
+.appendChild(div);
+
+}
+
+
+function embaralhar(array){
+
+return array.sort(
+()=>Math.random()-0.5
+);
+
+}
+
+
+function iniciarJogo(){
+
+const inputs =
+[
+...document.querySelectorAll("#jogadores input")
+];
+
+jogadores =
+inputs.map((input,index)=>({
+
+nome:
+input.value.trim() ||
+"Jogador "+(index+1),
+
+pontos:0
+
+}));
+
+
+if(jogadores.length < 2){
+
+alert("Adicione pelo menos 2 jogadores.");
+
+return;
+
+}
+
+
+const categoria =
+document.getElementById("categoria").value;
+
+const quantidade =
+Number(
+document.getElementById("quantidade").value
+);
+
+
+listaPerguntas =
+embaralhar(
+[...perguntas[categoria]]
+).slice(0,quantidade);
+
+
+perguntaAtual=0;
+
+jogadorAtual=0;
+
+mostrarTela("quiz");
+
+mostrarPergunta();
+
+}
+
+
+function mostrarPergunta(){
+
+clearInterval(intervalo);
+
+respondeu=false;
+
+tempo=15;
+
+const pergunta =
+listaPerguntas[perguntaAtual];
+
+
+document.getElementById("vezDe")
+.textContent =
+"🎤 Vez de "+jogadores[jogadorAtual].nome;
+
+
+document.getElementById("contador")
+.textContent =
+"Pergunta "+
+(perguntaAtual+1)+
+"/"+
+listaPerguntas.length;
+
+
+document.getElementById("timer")
+.textContent =
+tempo+"s";
+
+
+document.getElementById("barra")
+.style.width =
+(
+perguntaAtual/
+listaPerguntas.length*
+100
+)+"%";
+
+
+document.getElementById("pergunta")
+.textContent =
+pergunta.q;
+
+
+const area =
+document.getElementById("respostas");
+
+area.innerHTML="";
+
+
+pergunta.a.forEach((resposta,index)=>{
+
+const botao =
+document.createElement("button");
+
+botao.className="answer";
+
+botao.innerHTML =
+"<b>"+
+String.fromCharCode(65+index)+
+".</b> "+
+resposta;
+
+botao.onclick =
+()=>responder(index,botao);
+
+area.appendChild(botao);
+
+});
+
+
+document.getElementById("feedback")
+.textContent =
+"Escolha uma resposta!";
+
+
+document.getElementById("proxima")
+.classList.add("hidden");
+
+
+intervalo =
+setInterval(()=>{
+
+tempo--;
+
+document.getElementById("timer")
+.textContent =
+tempo+"s";
+
+
+if(tempo<=0){
+
+tempoAcabou();
+
+}
+
+},1000);
+
+}
+
+
+function responder(indice,botao){
+
+if(respondeu)return;
+
+respondeu=true;
+
+clearInterval(intervalo);
+
+const pergunta =
+listaPerguntas[perguntaAtual];
+
+const botoes =
+[
+...document.querySelectorAll(".answer")
+];
+
+
+botoes.forEach((b,index)=>{
+
+b.disabled=true;
+
+if(index===pergunta.c){
+
+b.classList.add("correct");
+
+}
+
+});
+
+
+if(indice===pergunta.c){
+
+const pontos =
+100+(tempo*10);
+
+jogadores[jogadorAtual]
+.pontos+=pontos;
+
+document.getElementById("feedback")
+.textContent =
+"🔥 ACERTOU! +"+
+pontos+
+" pontos!";
+
+}
+
+else{
+
+botao.classList.add("wrong");
+
+document.getElementById("feedback")
+.textContent =
+"😂 Errou! A resposta certa estava ali!";
+
+}
+
+
+document.getElementById("proxima")
+.classList.remove("hidden");
+
+}
+
+
+function tempoAcabou(){
+
+if(respondeu)return;
+
+respondeu=true;
+
+clearInterval(intervalo);
+
+const pergunta =
+listaPerguntas[perguntaAtual];
+
+
+document.querySelectorAll(".answer")
+.forEach((botao,index)=>{
+
+botao.disabled=true;
+
+if(index===pergunta.c){
+
+botao.classList.add("correct");
+
+}
+
+});
+
+
+document.getElementById("feedback")
+.textContent =
+"⏰ TEMPO ESGOTADO!";
+
+
+document.getElementById("proxima")
+.classList.remove("hidden");
+
+}
+
+
+function proximaPergunta(){
+
+perguntaAtual++;
+
+jogadorAtual++;
+
+if(jogadorAtual>=jogadores.length){
+
+jogadorAtual=0;
+
+}
+
+
+if(perguntaAtual>=listaPerguntas.length){
+
+finalizarJogo();
+
+return;
+
+}
+
+
+mostrarPergunta();
+
+}
+
+
+function finalizarJogo(){
+
+clearInterval(intervalo);
+
+mostrarTela("resultado");
+
+
+const ranking =
+[...jogadores]
+.sort(
+(a,b)=>b.pontos-a.pontos
+);
+
+
+document.getElementById("vencedor")
+.textContent =
+ranking[0].nome;
+
+
+document.getElementById("ranking")
+.innerHTML =
+ranking.map(
+(jogador,index)=>`
+
+<div>
+
+<span>
+${index+1}º ${jogador.nome}
+</span>
+
+<strong>
+${jogador.pontos} pts
+</strong>
+
+</div>
+
+`
+).join("");
+
+}
+
+
+function novoJogo(){
+
+mostrarConfiguracao();
+
+}
+
+</script>
+
+</body>
+</html>
